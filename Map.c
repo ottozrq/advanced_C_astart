@@ -19,12 +19,14 @@ static void prString(void * s) {
 }
 
 static void printCity(void *c) {
-  printf("+-Name:%s\tX:%d\tY:%d\n", ((City*)c)->name, ((City*)c)->x, ((City*)c)->y);
+  printf("+-Name:%s\tX:%d\tY:%d\n",
+	 ((City*)c)->name, ((City*)c)->x, ((City*)c)->y);
   forEach(((City*)c)->neighbour, ((City*)c)->neighbour->pr);
 }
 
 static void printN(void *n) {
-  printf("|__Name:%s\tDist:%d\t\n", ((Neighbour*)n)->city->name, ((Neighbour*)n)->distence);
+  printf("|__Name:%s\tDist:%d\tX:%d\tY:%d\n",
+	 ((Neighbour*)n)->city->name, ((Neighbour*)n)->distence, ((Neighbour*)n)->city->x, ((Neighbour*)n)->city->y);
 }
 
 
@@ -88,6 +90,26 @@ List* buildGraph(FILE *f, List *root, int isCity){
   return map;
 }
 
+void linkCities(List* map){
+  Node *city = map->head;
+  while (city){
+    Node *n = ((City*)city->val)->neighbour->head;
+    while (n){
+      Node *tmp = map->head;
+      while (tmp){
+	City *c = tmp->val;
+	Neighbour *nb = n->val;
+	if (strcmp(c->name, nb->city->name) == 0){
+	  free(nb->city);
+	  nb->city = c;
+	}
+	tmp = tmp->next;
+      }
+      n = n->next;
+    }
+    city = city->next;
+  }
+}
 
 List* loadMap(char *path){
   FILE *f = fopen(path, "r");
@@ -96,5 +118,6 @@ List* loadMap(char *path){
   List *map = buildGraph(f, NULL, 1);
   if (map == NULL)
     return 0;
+  linkCities(map);
   return map;
 }
