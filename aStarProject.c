@@ -2,6 +2,8 @@
 #include <stdio.h>
 
 int main(int argc, char* argv[]){
-  loadMap(argv[1]);
+  List *map = loadMap(argv[1]);
+  printf("%d\n", map->nelts);
+  displayList(map);
   return 0;
 }

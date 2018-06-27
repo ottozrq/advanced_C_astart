@@ -157,13 +157,13 @@ status remFromList (List* l, void* elt) {
 status displayList (List * l ) {
   Node * tmp = l->head;
   if (l->pr == 0) return ERRUNABLE;
-  printf("[ ");
+  printf("[\n");
   while (tmp) {
     (l->pr)(tmp->val);
     putchar(' ');
     tmp = tmp->next;
   }
-  putchar(']');
+  puts("]\n");
 }
 
 /* sequencially call given function with each element of given list */
