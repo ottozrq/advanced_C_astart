@@ -7,7 +7,7 @@ ALL =  aStar.static aStar.dynamic tStack ListTest tStack2
 
 all: $(ALL)
 
-CFLAGS = -g -fPIC
+CFLAGS = -g -fPIC -lm
 
 liblist.a: List.o status.o
 	ar cr $@ List.o status.o
@@ -17,11 +17,11 @@ liblist.so: List.o status.o
 	cc -shared -o $@ List.o status.o
 
 aStar.static: aStarProject.o Map.o liblist.a 
-	cc -static -o $@ aStarProject.o Map.o -L. -llist
+	cc -static -o $@ aStarProject.o Map.o -L. -llist -lm
 
 # CAUTION: dir must be in LD_LIBRARY_PATH
 aStar.dynamic: aStarProject.o Map.o liblist.so
-	cc -o $@ aStarProject.o Map.o -L.  -llist
+	cc -o $@ aStarProject.o Map.o -L.  -llist -lm
 
 tStack: Stack.o tStack.o status.o
 tStack2: Stack2.o tStack2.o status.o

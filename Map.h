@@ -22,4 +22,6 @@ typedef struct{
 
 List* loadMap(char *path);
 
+status computDist(List *map, char *end);
+
 #endif

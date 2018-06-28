@@ -163,7 +163,7 @@ status displayList (List * l ) {
     putchar(' ');
     tmp = tmp->next;
   }
-  puts("]\n");
+  puts("]");
 }
 
 /* sequencially call given function with each element of given list */

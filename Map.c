@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 #include "Map.h"
 
 static int compString (void * s1, void * s2) {
@@ -19,8 +20,9 @@ static void prString(void * s) {
 }
 
 static void printCity(void *c) {
-  printf("+-Name:%s\tX:%d\tY:%d\n",
-	 ((City*)c)->name, ((City*)c)->x, ((City*)c)->y);
+  printf("+-Name:%s\tX:%d\tY:%d\tDistToGoal:%d\n",
+	 ((City*)c)->name, ((City*)c)->x, ((City*)c)->y,
+	 ((City*)c)->distToGoal);
   forEach(((City*)c)->neighbour, ((City*)c)->neighbour->pr);
 }
 
@@ -71,13 +73,13 @@ List* buildGraph(FILE *f, List *root, int isCity){
       addList(map, initNeighbour(cityName, x));
     } else { // is a City
       if (! isCity){
-	printf("%s %d %d\n", cityName, x, y);
+	//printf("%s %d %d\n", cityName, x, y);
 	City *city = initCity(cityName, x, y);
 	city->neighbour = buildGraph(f, root, 0);
 	addList(root, city);
 	break;
       }
-      printf("%s %d %d\n", cityName, x, y);
+      //printf("%s %d %d\n", cityName, x, y);
       City *city = initCity(cityName, x, y);
       Node *n = NULL;
       if (n = isInList(map, city)){
@@ -120,4 +122,28 @@ List* loadMap(char *path){
     return 0;
   linkCities(map);
   return map;
+}
+
+int compDist(int x1, int y1, int x2, int y2){
+  return sqrt(pow(x1-x2, 2) + pow(y1-y2, 2));
+}
+
+status computeDist(List *map, char* end){
+  Node *t = map->head;
+  City* c = NULL;
+  while (t){
+    c = t->val;
+    if (strcasecmp(end, c->name) == 0)
+      break;
+    t = t->next;
+  }
+  if (strcasecmp(end, c->name) != 0)
+    return ERREXIST;
+  t = map->head;
+  while (t){
+    City *city = t->val;
+    city->distToGoal = compDist(c->x, c->y, city->x, city->y);
+    t = t->next;
+  }
+  return OK;
 }
