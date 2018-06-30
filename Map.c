@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <strings.h>
 #include <math.h>
 #include "Map.h"
 
@@ -128,18 +129,22 @@ int compDist(int x1, int y1, int x2, int y2){
   return sqrt(pow(x1-x2, 2) + pow(y1-y2, 2));
 }
 
-status computeDist(List *map, char* end){
+City *findCity(List *map, char *name){
   Node *t = map->head;
-  City* c = NULL;
   while (t){
-    c = t->val;
-    if (strcasecmp(end, c->name) == 0)
-      break;
+    City *c = t->val;
+    if (strcasecmp(name, c->name) == 0)
+      return c;
     t = t->next;
   }
-  if (strcasecmp(end, c->name) != 0)
+  return NULL;
+}
+
+status computeDist(List *map, char* end){
+  Node *t = map->head;
+  City* c = findCity(map, end);
+  if (c != NULL && strcasecmp(end, c->name) != 0)
     return ERREXIST;
-  t = map->head;
   while (t){
     City *city = t->val;
     city->distToGoal = compDist(c->x, c->y, city->x, city->y);

@@ -22,6 +22,8 @@ typedef struct{
 
 List* loadMap(char *path);
 
-status computDist(List *map, char *end);
+City *findCity(List *map, char *name);
+
+status computeDist(List *map, char *end);
 
 #endif

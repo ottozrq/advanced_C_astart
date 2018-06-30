@@ -3,7 +3,7 @@
 # dynamic version: must include .so directory in LD_LIBRARY_PATH
 ######################################################################
 
-ALL =  aStar.static aStar.dynamic tStack ListTest tStack2
+ALL =  aStar.static aStar.dynamic tStack ListTest MapTest tStack2
 
 all: $(ALL)
 
