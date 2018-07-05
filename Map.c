@@ -2,6 +2,7 @@
 #include <string.h>
 #include <strings.h>
 #include <math.h>
+#include <err.h>
 #include "Map.h"
 
 static int compString (void * s1, void * s2) {
@@ -117,7 +118,7 @@ void linkCities(List* map){
 List* loadMap(char *path){
   FILE *f = fopen(path, "r");
   if (f == NULL)
-    return 0;
+    err(1, "can not find file %s", path);
   List *map = buildGraph(f, NULL, 1);
   if (map == NULL)
     return 0;

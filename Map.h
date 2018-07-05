@@ -22,7 +22,7 @@ typedef struct{
 
 List* loadMap(char *path);
 
-City *findCity(List *map, char *name);
+City* findCity(List *map, char *name);
 
 status computeDist(List *map, char *end);
 
